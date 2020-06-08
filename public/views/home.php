@@ -3,7 +3,6 @@
 
 <!-- passing data from a model -->
 <ul>
-    <?php echo SECRET_KEY ?>
-    <?php echo $user->login();?>
+    <?php echo 'Order Code: '.$order_code?>
 </ul>
 <?php require_once('public/inc/footer.php');?>

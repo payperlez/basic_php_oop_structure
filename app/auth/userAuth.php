@@ -2,6 +2,6 @@
 
     $user = new User();
 
-    $user->login();
+    $order_code = $user->login();
 
 ?>
