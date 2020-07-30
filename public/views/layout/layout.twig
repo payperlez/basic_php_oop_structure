@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content=" BlogPay is a platform where you blog or share your writeups on our website and earn atleast GH₵ 380.00 every month, with amount earned being calculated on the number of views gained on posts published unto our website. Join BlogPay today and earn from the comfort of your home.">
+  <meta name="author" content="Team Payperlez">
+  <title>{{ title }}</title>
+  <!-- Favicon -->
+  <link rel="icon" href="assets/img/brand/logo.png" type="image/png">
+  <!-- Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700">
+  <!-- Icons -->
+  <link rel="stylesheet" href="public/static/vendor/nucleo/css/nucleo.css" type="text/css">
+  <link rel="stylesheet" href="public/static/vendor/@fortawesome/fontawesome-free/css/all.min.css" type="text/css">
+  <!-- Page plugins -->
+  <!-- Argon CSS -->
+  <link rel="stylesheet" href="public/static/css/argon.css?v=1.2.0" type="text/css">
+</head>
+<body class="{{ bgColor }}"> 
+ <!-- Main content -->
+  <div class="main-content">
+    {% block content %}{% endblock %}
+  </div>
+</body>
+<!-- Argon Scripts -->
+  <!-- Core -->
+  <script src="public/static/vendor/jquery/dist/jquery.min.js"></script>
+  <script src="public/static/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="public/static/vendor/js-cookie/js.cookie.js"></script>
+  <script src="public/static/vendor/jquery.scrollbar/jquery.scrollbar.min.js"></script>
+  <script src="public/static/vendor/jquery-scroll-lock/dist/jquery-scrollLock.min.js"></script>
+  <!-- Argon JS -->
+  <script src="public/static/js/argon.js?v=1.2.0"></script>
+</body>
+
+<!-- Core -->
+  <script src="public/static/vendor/jquery/jquery.min.js"></script>
+  <script src="public/static/vendor/popper/popper.min.js"></script>
+  <script src="public/static/vendor/bootstrap/bootstrap.min.js"></script>
+  <!-- Optional plugins -->
+  <!-- <script src="public/static/vendor/PLUGIN_FOLDER/PLUGIN_SCRIPT.js"></script> -->
+
+  <!-- Argon JS -->
+  <script src="public/static/js/argon.js"></script>
+  <script src="public/static/vendor2/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="public/static/vendor2/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="public/static/vendor2/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="public/static/vendor2/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
+    <script src="public/static/vendor2/datatables.net-buttons/js/buttons.html5.min.js"></script>
+    <script src="public/static/vendor2/datatables.net-buttons/js/buttons.flash.min.js"></script>
+    <script src="public/static/vendor2/datatables.net-buttons/js/buttons.print.min.js"></script>
+    <script src="public/static/vendor2/datatables.net-select/js/dataTables.select.min.js"></script>
+    <script>
+       $(document).ready(function(){
+          $('.dataTables_length').addClass('bs-select');
+           const report = function(){
+                let e, a = $("#result");
+
+                a.length && (e = {
+                    dom: "Bfrtip",
+                    info: false,
+                    pageLength: 10,
+                    lengthChange: false,
+                    select: true,
+                    buttons: [
+                        'copy', 
+                        { extend: 'csv', title: `Sales Report` }, 
+                        { extend: 'print', title: `Sales Report` },
+                    ],
+                    language: {
+                        paginate: {
+                            previous: "<i class='fas fa-angle-left'></i>",
+                            next: "<i class='fas fa-angle-right'></i>"
+                        }
+                    }
+                }, a.on("init.dt", function(){
+                    $('.dt-buttons .btn').removeClass('btn-secondary').addClass('btn-sm btn-default text-uppercase');
+                }).DataTable(e));
+            }();
+
+            $(".alert").delay(4000).slideUp(200, function() {
+                $(this).alert('close');
+            });
+        });
+    </script>
+</body>
+</html>

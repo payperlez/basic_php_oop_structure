@@ -23,14 +23,13 @@
  * 
  * 
  */
-@session_start();
 require_once('Sms.php');
 class DUtils extends SmsAlert{
     protected $connection;
 	protected $query;
 	public $query_count = 0;
 	
-	public function __construct($dbhost = '127.0.0.1', $dbuser = '', $dbpass = '', $dbname = '') {
+	public function __construct($dbhost = '127.0.0.1', $dbuser = 'root', $dbpass = 'Programmer@422', $dbname = 'blogpay') {
 		$this->connection = new mysqli($dbhost, $dbuser, $dbpass, $dbname);
 		if ($this->connection->connect_error) {
 			die('Failed to connect to MySQL - ' . $this->connection->connect_error);
@@ -186,7 +185,9 @@ class DUtils extends SmsAlert{
      *
      */
     public function debug($data = array()){
+        echo "<pre style='background-color:#222; color: green;padding:20px;>'";
         print_r($data);
+        echo "</pre>";
         die();
     }
 
@@ -284,6 +285,81 @@ class DUtils extends SmsAlert{
         $year = date('y/');
         $num = substr(str_shuffle("01234567899876543210"), 0, 4);
         return $this->card_num = strtoupper($prefix.$year.$num);
+    }
+
+    /**
+     * for displaying alert messages.... 
+     * Using Argon bootstrap
+     * change to suit your css styles or css framework
+     */
+
+    public function alert($message, $type){
+        switch ($type) {
+            case 'error':
+                return '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <button type="button" aria-hidden="true" class="alert-dismissible close" data-dismiss="alert" aria-label="Close">
+                    <i class="tim-icons icon-simple-remove"></i>
+                </button>
+                <span data-notify="icon" class="tim-icons icon-trophy"></span>
+                <span><b> Heads up! - </b> '.$message.'</span>
+                 </div>';
+                break;
+            case 'success':
+                return '<div class="alert alert-success alert-with-icon">
+                <button type="button" aria-hidden="true" class="close" data-dismiss="alert" aria-label="Close">
+                    <i class="tim-icons icon-simple-remove"></i>
+                </button>
+                <span data-notify="icon" class="tim-icons icon-trophy"></span>
+                <span><b> Heads up! - </b> '.$message.'</span>
+                 </div>';
+            default:
+                
+                break;
+        }
+     
+    }
+
+    /** for hashing password
+     * 
+     * In this case, we want to increase the default cost for BCRYPT to 12.
+     * Note that we also switched to BCRYPT, which will always be 60 characters.
+     */
+    public function passHash($password){
+            $options = [
+                'cost' => 12,
+            ];
+       return $passwordHash = password_hash($password, PASSWORD_BCRYPT, $options); 
+    }
+
+    public function passVerify($password, $hash){
+       return $passVerify = (password_verify($password, $hash)) ? true : false ;
+    }
+
+     /**
+     * @return mixed
+     */
+    public function get_ip(){
+        if(function_exists('apache_request_headers')){
+            $headers = apache_request_headers();
+        } else{
+            $headers = $_SERVER;
+        }
+
+        if(array_key_exists('X-Forwarded-For', $headers) &&
+                filter_var($headers['X-Forwarded-For'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)){
+            $the_ip = $headers['X-Forwarded-For'];
+        } elseif(array_key_exists('HTTP_X_FORWARDED_FOR', $headers) &&
+                filter_var($headers['HTTP_X_FORWARDED_FOR'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)){
+            $the_ip = $headers['HTTP_X_FORWARDED_FOR'];
+        } else{
+            $the_ip = filter_var($_SERVER['REMOTE_ADDR'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4);
+        }
+
+        return $the_ip;
+    }
+
+    public function calcEarn($views){
+        return $earn = $views * CHARGES;
     }
 
 }
