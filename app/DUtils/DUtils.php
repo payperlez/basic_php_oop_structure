@@ -358,9 +358,5 @@ class DUtils extends SmsAlert{
         return $the_ip;
     }
 
-    public function calcEarn($views){
-        return $earn = $views * CHARGES;
-    }
-
 }
 ?>

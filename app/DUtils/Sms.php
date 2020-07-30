@@ -8,9 +8,9 @@
 	class SmsAlert{
 
 		public function message($_phone, $_message){
-			$this->_pubkey = 'd716e98ca24b53f0';
-			$this->_prikey = '2020050286000128';
-			$this->_sender_id = "BLOGPAY"; 	
+			$this->_pubkey = '';
+			$this->_prikey = '';
+			$this->_sender_id = ""; 	
 			// this encodes the message                         
 			$message= rawurlencode($_message);                   
 			$numbers= rawurlencode($_phone); 
