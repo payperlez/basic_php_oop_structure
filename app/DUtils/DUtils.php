@@ -29,7 +29,7 @@ class DUtils extends SmsAlert{
 	protected $query;
 	public $query_count = 0;
 	
-	public function __construct($dbhost = '127.0.0.1', $dbuser = 'root', $dbpass = 'Programmer@422', $dbname = 'blogpay') {
+	public function __construct($dbhost = '', $dbuser = '', $dbpass = '', $dbname = '') {
 		$this->connection = new mysqli($dbhost, $dbuser, $dbpass, $dbname);
 		if ($this->connection->connect_error) {
 			die('Failed to connect to MySQL - ' . $this->connection->connect_error);
