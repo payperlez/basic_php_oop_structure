@@ -358,5 +358,134 @@ class DUtils extends SmsAlert{
         return $the_ip;
     }
 
+    /**
+     * @param $data
+     * @param null $filename
+     */
+    public static function createCSV($data, $filename = null){
+        if(!isset($filename)){
+            $filename = "replies";
+        }
+
+        //Clear output buffer
+        ob_clean();
+
+        //Set the Content-Type and Content-Disposition headers.
+        header("Content-type: text/x-csv");
+        header("Content-Transfer-Encoding: binary");
+        header("Content-Disposition: attachment; filename={$filename}-".date('YmdHis',strtotime('now')).".csv");
+        header("Pragma: no-cache");
+        header("Expires: 0");
+
+        //Open up a PHP output stream using the function fopen.
+        $fp = fopen('php://output', 'w');
+
+        //Loop through the array containing our CSV data.
+        foreach ($data as $row) {
+            //fputcsv formats the array into a CSV format.
+            //It then writes the result to our output stream.
+            fputcsv($fp, $row);
+        }
+
+        //Close the file handle.
+        fclose($fp);
+    }
+
+    /**
+     * hash_cost - Calculate the cost the server can take when using password_hash function
+     *
+     * @return int
+     */
+    public static function hash_cost(){
+        $timeTarget = 0.05;
+        $cost = 8;
+        do{
+            $cost++;
+            $start = microtime(true);
+            password_hash("diyframeworktest", PASSWORD_BCRYPT, ["cost" => $cost]);
+            $end = microtime(true);
+        } while(($end - $start) < $timeTarget);
+
+        return $cost;
+    }
+
+    /**
+     * crypt AES 256
+     *
+     * @param data $data
+     * @param string $passphrase
+     * @return base64 encrypted data
+     */
+    public static function encrypt($data, $passphrase){
+        // Set a random salt
+        $salt = openssl_random_pseudo_bytes(16);
+
+        $salted = '';
+        $dx = '';
+        // Salt the key(32) and iv(16) = 48
+        while (strlen($salted) < 48) {
+        $dx = hash('sha256', $dx.$passphrase.$salt, true);
+        $salted .= $dx;
+        }
+
+        $key = substr($salted, 0, 32);
+        $iv  = substr($salted, 32,16);
+
+        $encrypted_data = openssl_encrypt($data, 'AES-256-CBC', $key, true, $iv);
+        return base64_encode($salt . $encrypted_data);
+    }
+
+    /**
+     * decrypt AES 256
+    *
+    * @param data $edata
+    * @param string $password
+    * @return decrypted data
+    */
+    public static function decrypt($edata, $passphrase){
+        $data = base64_decode($edata);
+        $salt = substr($data, 0, 16);
+        $ct = substr($data, 16);
+
+        $rounds = 3; // depends on key length
+        $data00 = $passphrase.$salt;
+        $hash = array();
+        $hash[0] = hash('sha256', $data00, true);
+        $result = $hash[0];
+        for ($i = 1; $i < $rounds; $i++) {
+            $hash[$i] = hash('sha256', $hash[$i - 1].$data00, true);
+            $result .= $hash[$i];
+        }
+        $key = substr($result, 0, 32);
+        $iv  = substr($result, 32,16);
+
+        return openssl_decrypt($ct, 'AES-256-CBC', $key, true, $iv);
+    }
+
+    /**
+     * Get either a Gravatar URL or complete image tag for a specified email address
+     *
+     * @param string $email The email address
+     * @param integer $size Size of image in pixels. Desfaults to 80 [1 - 2048]
+     * @param string $imageset Default imageset to use [ 404 | mp | identicon | monsterid | wavatar ]
+     * @param string $rating Maximum rating (inclusive) [ g | pg | r | x ]
+     * @param boolean $tag True to return a complete IMG tag False for just the URL
+     * @param array $attr Optional, additional key/value attributes to include in the IMG tag
+     * @return String containing either just a URL or a complete image tag
+     */
+    public static function gravatar($email, $size = 80, $imageset = 'mp', $rating = 'g', $tag = false, $attr = array()){
+        $url = 'https://www.gravatar.com/avatar/';
+        $url .= md5( strtolower( trim( $email ) ) );
+        $url .= "?s=$size&d=$imageset&r=$rating";
+
+        if ($tag) {
+            $url = '<img src="' . $url . '"';
+            foreach ( $attr as $key => $val ) $url .= ' ' . $key . '="' . $val . '"';
+            $url .= ' />';
+        }
+
+        return $url;
+    }
+
 }
 ?>
