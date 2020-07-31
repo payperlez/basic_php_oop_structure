@@ -7,7 +7,7 @@ This is a simple web development structure for PHP OOP developments. Just clone 
 
 # How to use
 - create a class in your models/
-- access your model/ through an auth/ file
+- access your model/ through your Controllers/ directory
 
 # Addons
 - Sms class using MSM Pusher. Create account at http://msmpusher.com/
