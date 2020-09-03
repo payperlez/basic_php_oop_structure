@@ -15,19 +15,19 @@ class Mailer {
         //Set PHPMailer to use SMTP.
         $mail->isSMTP();            
         //Set SMTP host name                          
-        $mail->Host = "mail.myblogpay.com";
+        $mail->Host = "smtp.gmail.com";
         //Set this to true if SMTP host requires authentication to send email
         $mail->SMTPAuth = true;                          
         //Provide username and password     
-        $mail->Username = "info@myblogpay.com";                 
-        $mail->Password = "!@£qwerty";                           
+        $mail->Username = "example@me.com";                 
+        $mail->Password = "password";                           
         //If SMTP requires TLS encryption then set it
         $mail->SMTPSecure = "tls";                           
         //Set TCP port to connect to
         $mail->Port = 587;                                   
 
-        $mail->From = "info@myblogpay.com";
-        $mail->FromName = "BLOGPAY";
+        $mail->From = "example@me.com";
+        $mail->FromName = "HOST EMAIL";
 
         $mail->addAddress($mailTo, "");
 
@@ -35,7 +35,7 @@ class Mailer {
 
         $mail->Subject = $subject;
         $mail->Body = "<header style='background-color:#11cdef; color:#fff;'>
-                <img src='https://myblogpay.com/public/static/img/theme/blue.png'>
+                <img src='#'>
         </header>
         <section style='margin-top:20px;'>
         <p>{$altBody}</p><br>
