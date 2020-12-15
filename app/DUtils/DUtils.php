@@ -493,5 +493,13 @@ class DUtils extends SmsAlert{
         return preg_replace('/[^A-Za-z0-9-\-]/', '', $string); // Removes special chars.
      }
 
+     public function validate_phone($phone){
+        if(!preg_match('/^[0-9]{10}+$/', $phone)){
+            return false;
+        }else{
+            return true;
+        }
+     }
+
 }
 ?>
