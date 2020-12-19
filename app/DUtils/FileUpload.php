@@ -8,7 +8,7 @@
 	 */
 
 	@session_start();
-	//require_once('DAL.php');
+	// require_once('DAL.php');
 
 	class FileUploader{
 
@@ -34,30 +34,36 @@
 		public function uploader(){
 			$this->extensions();
 			if (in_array($this->_fileExt, $this->_extensions) == false) {
-				return $this->alert = $this->alert('please check file extention to be: jpeg, jpg, png, pdf, docx or cvs', 'error');
+				return $this->alert = $this->alert('please check file extention to be: jpeg, jpg, png, gif', 'error');
 			}else{
 				if (empty($this->alert) == true) {
 					# code...
 					if ($this->_fileSize <= 2097152) {
 						# code...
-						// return $this->alert = (['success', 'File uploaded succesfully']);
 						$this->move();
+						//return $this->alert = true;
 					}else{
-						return $this->alert = $this->alert( 'File size must be excately 2 MB', 'error');
+						return $this->alert = false;
 					}
 
 				}else{
-					return $this->alert = $this->alert('something went wrong', 'error');	
+					return $this->alert = false;	
 				}
 			}
 		}
 
 		public function extensions(){
-			return $this->_extensions = (['jpeg', 'jpg', 'png', 'docx', 'cvs','pdf']);
+			return $this->_extensions = (['jpeg', 'jpg', 'png', 'gif']);
 		}
 
 		public function move(){
-			return $this->_move = move_uploaded_file($this->_fileTmp, $this->_destination.$this->_fileName);
+			$this->_move = move_uploaded_file($this->_fileTmp, $this->_destination.$this->_fileName);
+			
+			if ($this->_move) {
+				return $this->alert = true;
+			}else{
+				return $this->alert = false;
+			}
 		}
 	}
 
