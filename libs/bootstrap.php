@@ -1,5 +1,5 @@
 <?php
-
+Session::set('STATIC', 'public/static');
 // Load our autoloader
 require_once dirname(dirname(__FILE__)).'/vendor/autoload.php';
 
